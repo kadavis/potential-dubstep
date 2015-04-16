@@ -1,7 +1,91 @@
+<?php
+// Title of my site
+$title = 'KD\'s PHP Site';
+
+// My 1st way to try this...
+// A class to create the variables needed for each page
+ class Page {
+	// An array of pages
+	public $pages = array('home', 'about', 'contact', 'stuff', 'things');
+	public $page = $_GET['page']; // This line seems to failing, why can't I get???
+	public $activePage = $pages[$page];
+	public $id;
+	public $slug;
+	public $title;
+	public $description;
+
+
+
+	// Find the active page
+	public function whatPage($activePage) {
+		// Not sure how to do this, but here are my thoughts...
+		if (!isset($_GET['page'])) {
+			$this->$activePage = $pages['home'];
+			return $this->$activePage;
+		}
+		else {
+			$this->$activePage = $pages[($_GET['page'])];
+			return $this->$activePage;
+		}
+	}
+
+}
+
+// Instances of the pages
+
+$home = new Page;
+$home->id = 'home';
+$home->slug = '/';
+$home->title = 'Welcome to GALAXY';
+$home->description = 'Home page';
+$home->page = $home->id;
+$home->whatPage($activePage);
+
+$about = new Page;
+$about->id = 'about';
+$about->slug = '/about';
+$about->title = 'About';
+$about->description = 'About page';
+$about->page = $about->id;
+$about->whatPage($activePage);
+
+$contact = new Page;
+$contact->id = 'contact';
+$contact->slug = '/contact';
+$contact->title = 'Contact';
+$contact->description = 'Contact page';
+$contact->page = $contact->id;
+$contact->whatPage($activePage);
+
+$stuff = new Page;
+$stuff->id = 'stuff';
+$stuff->slug = '/stuff';
+$stuff->title = 'Stuff';
+$stuff->description = 'Stuff page';
+$stuff->page = $stuff->id;
+$stuff->whatPage($activePage);
+
+$things = new Page;
+$things->id = 'things';
+$things->slug = '/things';
+$things->title = 'Things';
+$things->description = 'Things page';
+$things->page = $things->id;
+$things->whatPage($activePage);
+
+
+// Once all of the above is figured out...
+// Create page titles
+//$pageTitle = $activePage->title.' - '.$title;
+// Create page descriptions
+//$pageDescription = $activePage->description;
+
+?>
+
 <html>
 	<head>
-		<title>Need some php here for Page Title</title>
-		<meta name="description" content="Need some php here for the Description">
+		<title><?=html_entity_decode($pageTitle);?></title>
+		<meta name="description" content="<?=$pageDescription;?>">
 		<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,11 +100,11 @@
 		<div class="navbar navbar-default">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Page Title</a></li>
-					<li><a href="#">Page Title</a></li>
-					<li><a href="#">Page Title</a></li>
-					<li><a href="#">Page Title</a></li>
-					<li><a href="#">Page Title</a></li>
+					<li><a href="/">Home</a></li>
+					<li><a href="/about">About</a></li>
+					<li><a href="/contact">Contact</a></li>
+					<li><a href="/stuff">Stuff</a></li>
+					<li><a href="/things">Things</a></li>
 				</ul>	
 			</div>
 		</div>	
@@ -38,10 +122,8 @@
 		<!-- START Page Code -->
 		<div id="page-content-area">
 			<div class="container">
-				<h2>Page Title</h2>
-				This is where the page content will pull in...<br/>
-				<?php echo 'Hello Derek, this is my index page.<br/>';?>
-				Am I ready to start putting in some php now?
+				<h2>Title here</h2>
+				content here...
 			</div>
 		</div>
 		<!-- END Page Code -->
