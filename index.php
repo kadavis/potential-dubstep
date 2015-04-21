@@ -2,76 +2,88 @@
 // Title of my site
 $title = 'KD\'s PHP Site';
 
-// My 1st way to try this...
+// My 2st way to try this after reviewing with D...
 // A class to create the variables needed for each page
  class Page {
-	// An array of pages
-	public $pages = array('home', 'about', 'contact', 'stuff', 'things');
-	public $page = $_GET['page']; // This line seems to failing, why can't I get???
-	public $activePage = $pages[$page];
 	public $id;
 	public $slug;
 	public $title;
 	public $description;
+	public $template;
 
-
-
-	// Find the active page
-	public function whatPage($activePage) {
-		// Not sure how to do this, but here are my thoughts...
-		if (!isset($_GET['page'])) {
-			$this->$activePage = $pages['home'];
-			return $this->$activePage;
-		}
-		else {
-			$this->$activePage = $pages[($_GET['page'])];
-			return $this->$activePage;
-		}
-	}
-
+	/*public function test() {
+        var_dump(get_object_vars($this));
+    }*/
 }
 
 // Instances of the pages
-
 $home = new Page;
 $home->id = 'home';
-$home->slug = '/';
+$home->slug = '';
 $home->title = 'Welcome to GALAXY';
 $home->description = 'Home page';
-$home->page = $home->id;
-$home->whatPage($activePage);
+$home->template = 'home.php';
+
+//var_dump(get_object_vars($home));
+//echo "<br/>";
 
 $about = new Page;
 $about->id = 'about';
-$about->slug = '/about';
+$about->slug = 'about';
 $about->title = 'About';
 $about->description = 'About page';
-$about->page = $about->id;
-$about->whatPage($activePage);
+$about->template = 'about.php';
+
+//var_dump(get_object_vars($about));
+//echo "<br/>";
 
 $contact = new Page;
 $contact->id = 'contact';
-$contact->slug = '/contact';
+$contact->slug = 'contact';
 $contact->title = 'Contact';
 $contact->description = 'Contact page';
-$contact->page = $contact->id;
-$contact->whatPage($activePage);
+$contact->template = 'contact.php';
+
+//var_dump(get_object_vars($contact));
+//echo "<br/>";
 
 $stuff = new Page;
 $stuff->id = 'stuff';
-$stuff->slug = '/stuff';
+$stuff->slug = 'stuff';
 $stuff->title = 'Stuff';
 $stuff->description = 'Stuff page';
-$stuff->page = $stuff->id;
-$stuff->whatPage($activePage);
+$stuff->template = 'stuff.php';
+
+//var_dump(get_object_vars($stuff));
+//echo "<br/>";
 
 $things = new Page;
 $things->id = 'things';
-$things->slug = '/things';
+$things->slug = 'things';
 $things->title = 'Things';
 $things->description = 'Things page';
-$things->page = $things->id;
-$things->whatPage($activePage);
+$things->template = 'things.php';
+
+//var_dump(get_object_vars($things));
+//echo "<br/>";
+
+// A class to get and find the active page
+class Pages {
+	//Private var for all pages (don't want anything other than this class to see/use it)
+	
+	//Function to get the slug by id
+	
+	//Function to get page
+	
+	//Function to add page
+	
+}
+
+//Instances of the pages class to add pages
+
+//Get Slug of current page
+
+//Current page based on slug
 
 
 // Once all of the above is figured out...
