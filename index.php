@@ -1,6 +1,6 @@
 <?php
-// Title of my site
-$title = 'KD\'s PHP Site';
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
 // My 2st way to try this after reviewing with D...
 // A class to create the variables needed for each page
@@ -16,10 +16,10 @@ $title = 'KD\'s PHP Site';
     }*/
 }
 
-// Instances of the pages
+// Instances of Page
 $home = new Page;
 $home->id = 'home';
-$home->slug = '';
+$home->slug = 'home';
 $home->title = 'Welcome to GALAXY';
 $home->description = 'Home page';
 $home->template = 'home.php';
@@ -67,30 +67,73 @@ $things->template = 'things.php';
 //var_dump(get_object_vars($things));
 //echo "<br/>";
 
+
+// ----------------------------------------------
+// I get & understand all of the above that has 
+// to do with the Page class and instances.
+// ----------------------------------------------
+// I start getting confused with the stuff below
+// that has to do with the Pages class...
+// ----------------------------------------------
+// I made note on each line to try and make sense
+// of what everything was doing...
+// but I still need a refrsher to connect the
+// dots once again.
+// ----------------------------------------------
+
+
 // A class to get and find the active page
 class Pages {
-	//Private var for all pages (don't want anything other than this class to see/use it)
-	
-	//Function to get the slug by id
-	
-	//Function to get page
-	
-	//Function to add page
+	//Private var for all pages bc we don't want anything other than this class to use it
+	private $all_pages; // I don't get where this var is ever assigned a value(s)
+	//Function to get the page by slug (used in the current Page variable below)
+	public function getPageBySlug($slug) { //run function by slug var to get the page
+		if ($this->all_pages) {  //if all_pages variable exists
+			foreach ($this->all_pages as $p) { // then for each all_pages variable now reference it as p variable
+				if ($this->slug == $slug) { // if the slug for a page is equal to the currentPage slug 
+					return $p; // then return the page
+				}
+				return $this->all_pages[0]; // otherwise return the index 0/home page
+			}
+		}
+		return false; // otherwise return false
+	}
+	//Function to add page (used in the Pages instances below)
+	public function addPage($page) { // run function by page var to add a page to the site
+		$this->all_pages[] = $page; // the all_pages array item is equal to the page variable
+	}
+	//Function to get page (don't see where this is used though)
+	public function getPages() { //run function to get the page
+		return $this->all_pages; // return the pages
+	}
 	
 }
 
-//Instances of the pages class to add pages
+//Instances of the pages class to add pages to the site
+$pages = new Pages;
+$pages->addPage($home);
+$pages->addPage($about);
+$pages->addPage($contact);
+$pages->addPage($stuff);
+$pages->addPage($things);
+//var_dump($pages);
+
 
 //Get Slug of current page
+function getPageSlug() {
+	$pageSlug = '';
+	if (isset($_GET['page']) && ! empty($_GET['page'])) {
+		$pageSlug = $_GET['page'];
+	}
+	return $pageSlug;
+}
+
+$slug = getPageSlug();
+//var_dump($slug)
 
 //Current page based on slug
-
-
-// Once all of the above is figured out...
-// Create page titles
-//$pageTitle = $activePage->title.' - '.$title;
-// Create page descriptions
-//$pageDescription = $activePage->description;
+//$currentPage = $pages->getPageBySlug($slug); // Notice undefined property, line 91...
+//var_dump($currentPage)
 
 ?>
 
@@ -112,11 +155,11 @@ class Pages {
 		<div class="navbar navbar-default">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li><a href="/">Home</a></li>
-					<li><a href="/about">About</a></li>
-					<li><a href="/contact">Contact</a></li>
-					<li><a href="/stuff">Stuff</a></li>
-					<li><a href="/things">Things</a></li>
+					<li><a href="">Home</a></li>
+					<li><a href="">About</a></li>
+					<li><a href="">Contact</a></li>
+					<li><a href="">Stuff</a></li>
+					<li><a href="">Things</a></li>
 				</ul>	
 			</div>
 		</div>	
