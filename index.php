@@ -77,50 +77,55 @@ $things->template = 'things.php';
 // ----------------------------------------------
 // I made note on each line to try and make sense
 // of what everything was doing...
-// but I still need a refrsher to connect the
-// dots once again.
+// refresher with Derek helped :)
 // ----------------------------------------------
 
 
 // A class to get and find the active page
 class Pages {
 	//Private var for all pages bc we don't want anything other than this class to use it
-	private $all_pages; // I don't get where this var is ever assigned a value(s)
+	private $all_pages = array(); // Declaring this variable as private array, so only this class can use it.
 	//Function to get the page by slug (used in the current Page variable below)
 	public function getPageBySlug($slug) { //run function by slug var to get the page
-		if ($this->all_pages) {  //if all_pages variable exists
-			foreach ($this->all_pages as $p) { // then for each all_pages variable now reference it as p variable
-				if ($this->slug == $slug) { // if the slug for a page is equal to the currentPage slug 
+		//var_dump($slug); // This tests the slug variable.
+		//var_dump($this->all_pages); // This tests array variable.
+		//die();
+		if ($this->all_pages) {  //if all_pages array exists
+			foreach ($this->all_pages as $p) { // then for each item in the all_pages array now reference it as p variable
+				//var_dump($p->slug, $slug); // Test that it is finding the proper page slug we are after
+				if ($p->slug == $slug) { // if the slug for a page is equal to any page slug 
 					return $p; // then return the page
 				}
-				return $this->all_pages[0]; // otherwise return the index 0/home page
 			}
+			return $this->all_pages[0]; // otherwise return the index 0/home page
 		}
 		return false; // otherwise return false
 	}
 	//Function to add page (used in the Pages instances below)
 	public function addPage($page) { // run function by page var to add a page to the site
-		$this->all_pages[] = $page; // the all_pages array item is equal to the page variable
+		$this->all_pages[] = $page; // adding the page in the function argument to the all_pages array
+		//array_push($this->all_pages, $page); // longer version of the above line
 	}
-	//Function to get page (don't see where this is used though)
-	public function getPages() { //run function to get the page
-		return $this->all_pages; // return the pages
+	//Function to get pages that were added into the all_pages array (is this used somewhere I am missing)
+	public function getPages() { //run function to get the pages
+		return $this->all_pages; // return the array of pages
 	}
 	
 }
 
 //Instances of the pages class to add pages to the site
-$pages = new Pages;
-$pages->addPage($home);
-$pages->addPage($about);
-$pages->addPage($contact);
-$pages->addPage($stuff);
-$pages->addPage($things);
-//var_dump($pages);
+$siteMap = new Pages;
+$siteMap->addPage($home);
+$siteMap->addPage($about);
+$siteMap->addPage($contact);
+$siteMap->addPage($stuff);
+$siteMap->addPage($things);
+//var_dump($siteMap->getPages());
+//var_dump($siteMap->getPageBySlug('contact'));
 
 
 //Get Slug of current page
-function getPageSlug() {
+function getCurrentPageSlug() {
 	$pageSlug = '';
 	if (isset($_GET['page']) && ! empty($_GET['page'])) {
 		$pageSlug = $_GET['page'];
@@ -128,19 +133,17 @@ function getPageSlug() {
 	return $pageSlug;
 }
 
-$slug = getPageSlug();
-//var_dump($slug)
+$slug = getCurrentPageSlug();
+//var_dump($slug);
 
 //Current page based on slug
-//$currentPage = $pages->getPageBySlug($slug); // Notice undefined property, line 91...
-//var_dump($currentPage)
+$currentPage = $siteMap->getPageBySlug($slug); // Notice undefined property, line 91...
+//var_dump($currentPage);
 
-?>
-
-<html>
+?><html>
 	<head>
-		<title><?=html_entity_decode($pageTitle);?></title>
-		<meta name="description" content="<?=$pageDescription;?>">
+		<title><?=html_entity_decode($currentPage->title);?></title>
+		<meta name="description" content="<?=$currentPage->description;?>">
 		<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -155,30 +158,39 @@ $slug = getPageSlug();
 		<div class="navbar navbar-default">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li><a href="">Home</a></li>
-					<li><a href="">About</a></li>
-					<li><a href="">Contact</a></li>
-					<li><a href="">Stuff</a></li>
-					<li><a href="">Things</a></li>
+					<?php
+					foreach ($siteMap->getPages() as $navItem) {
+						$isActive = '';
+						if ($currentPage == $navItem) {
+							 $isActive = ' class="active"';
+						}
+						echo '<li'.$isActive.'><a href="index.php?page='.$navItem->slug.'">'.$navItem->title.'</a></li>';
+					}
+					?>
 				</ul>	
 			</div>
 		</div>	
-		<!-- if statement for home page here -->
+		<?php
+		if ($currentPage == $home)
+		{
+		?>
 		<div id="home-page-header">
 			<div class="container">
 				<h1>GALAXY</h1>
 				<p>Kristin's AWESOME php site!</p>
 			</div>	
 		</div>	
-		<!-- end if -->
+		<?php
+		}
+		?>
 		<!-- END Header Code -->
 
 
 		<!-- START Page Code -->
 		<div id="page-content-area">
 			<div class="container">
-				<h2>Title here</h2>
-				content here...
+				<h2><?php echo $currentPage->title; ?></h2>
+				<?php include('pages/'.$currentPage->template); ?>
 			</div>
 		</div>
 		<!-- END Page Code -->
